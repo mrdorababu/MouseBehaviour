@@ -16,6 +16,7 @@
 #define         ROTARY_ENC_B                3 
 #define         TONE_PIN                    8
 #define         LED_PIN                     9
+#define         SHOCK_PIN                   10
 
 // These pins are more than 7.
 #define         CAMERA_TTL_PIN              10

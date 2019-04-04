@@ -92,14 +92,16 @@ void write_data_line( )
     int puff = digitalRead( PUFF_PIN );
     int tone = digitalRead( TONE_PIN );
     int led = digitalRead( LED_PIN );
+    int shock = digitalRead( SHOCK_PIN);
     int camera = digitalRead( CAMERA_TTL_PIN );
     int microscope = digitalRead( IMAGING_TRIGGER_PIN);
 
     unsigned long timestamp = millis() - trial_start_time_;
 
     char msg[100];
-    sprintf(msg, "%lu,%s,%d,%d,%d,%d,%d,%d,%s,%ld"
-            , timestamp, PROTO_CODE, trial_count_, puff, tone, led
+    sprintf(msg, "%lu,%s,%d,%d,%d,%d,%d,%d,%d,%s,%ld"
+            , timestamp, PROTO_CODE, trial_count_
+            , puff, tone, led, shock
             , camera, microscope, trial_state_, encoder_value_
            );
 
@@ -264,6 +266,7 @@ void setup()
     pinMode( TONE_PIN, OUTPUT );
     pinMode( PUFF_PIN, OUTPUT );
     pinMode( LED_PIN, OUTPUT );
+    pinMode( SHOCK_PIN, OUTPUT );
 
     pinMode( CAMERA_TTL_PIN, OUTPUT );
     pinMode( IMAGING_TRIGGER_PIN, OUTPUT );
@@ -279,17 +282,6 @@ void setup()
     //on interrupt 0 (pin 2), or interrupt 1 (pin 3)
     attachInterrupt(0, updateEncoder, CHANGE);
     attachInterrupt(1, updateEncoder, CHANGE);
-
-
-#ifdef USE_MOUSE
-    // Configure mouse here
-    mouse.initialize( );
-    Serial.println( "Stuck in setup() ... mostly due to MOUSE" );
-#else
-    Serial.println( "Using LED/DIODE pair" );
-    pinMode( MOTION1_PIN, INPUT );
-    pinMode( MOTION2_PIN, INPUT );
-#endif
 
     print_trial_info( );
     wait_for_start( );
